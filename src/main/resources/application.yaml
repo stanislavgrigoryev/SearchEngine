@@ -1,4 +1,22 @@
 # example values
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: stas
+    password: stas
+    url: jdbc:mysql://localhost:3306/search_engine?useSSH=false&requireSSH=false&allowPublicKeyRetrieval=true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+
+
 
 indexing-settings:
   sites:
