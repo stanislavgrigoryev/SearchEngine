@@ -1,7 +1,6 @@
 package searchengine.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -10,6 +9,9 @@ import java.util.Objects;
 @Table(name = "page", indexes = @javax.persistence.Index(columnList = "path"), uniqueConstraints = @UniqueConstraint(columnNames = {"site_id", "path"}))
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Page {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
