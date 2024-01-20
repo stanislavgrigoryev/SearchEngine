@@ -34,6 +34,7 @@ public class IndexingService {
                 .statusTime(LocalDateTime.now())
                 .name(site.getName())
                 .build())).collect(Collectors.toList());
+        siteRepository.flush();
         siteList.forEach(site -> new UrlParser(site.getUrl(), site.getId(), pageRepository, siteRepository, "/").fork());
 
         return new ResultResponse(true, null);
