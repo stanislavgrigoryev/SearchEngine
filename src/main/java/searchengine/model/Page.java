@@ -1,15 +1,21 @@
 package searchengine.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-@Entity
-@Table(name = "page", indexes = @javax.persistence.Index(columnList = "path"), uniqueConstraints = @UniqueConstraint(columnNames = {"site_id", "path"}))
 @Getter
 @Setter
+@ToString
+@Builder
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
+@Entity
+@Table(name = "page", indexes = @javax.persistence.Index(columnList = "path"),
+        uniqueConstraints = @UniqueConstraint(columnNames = {"site_id", "path"}))
 public class Page {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +23,7 @@ public class Page {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(nullable = false, columnDefinition = "INT")
+    @JoinColumn(name = "site_id", nullable = false, columnDefinition = "INT")
     private Site site;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(511)", length = 511)
@@ -27,7 +33,13 @@ public class Page {
     private Integer code;
 
     @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
+    @ToString.Exclude
     private String content;
+
+    @OneToMany(mappedBy = "page", cascade = CascadeType.ALL)
+    @Builder.Default
+    @ToString.Exclude
+    private Set<Index> indices = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
