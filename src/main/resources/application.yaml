@@ -1,7 +1,5 @@
 indexing-settings:
   sites:
-    - url: https://chelyabinsk.metrofitness.ru
-      name: Metrofitness
     - url: https://nikoartgallery.com
       name: Креативное пространство и галерея Н.Б. Никогосяна
     - url: https://www.svetlovka.ru
