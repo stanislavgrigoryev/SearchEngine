@@ -4,24 +4,25 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-@Entity
-@Table(name = "site")
 @Getter
 @Setter
+@ToString
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@Entity
+@Table(name = "site")
 public class Site {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "INT")
     private Integer id;
 
-    @Column(nullable = false, columnDefinition = "ENUM('INDEXING','INDEXED','FAILED')")
+    @Column(nullable = false, columnDefinition = "ENUM('INDEXING', 'INDEXED', 'FAILED')")
     @Enumerated(EnumType.STRING)
     private SiteStatus status;
 
@@ -31,7 +32,7 @@ public class Site {
     @Column(columnDefinition = "TEXT")
     private String lastError;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(255)", unique = true)
+    @Column(nullable = false, unique = true, columnDefinition = "VARCHAR(255)")
     private String url;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")
@@ -39,7 +40,13 @@ public class Site {
 
     @OneToMany(mappedBy = "site", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<Page> pages = new ArrayList<>();
+    @ToString.Exclude
+    private Set<Page> pages = new HashSet<>();
+
+    @OneToMany(mappedBy = "site", cascade = CascadeType.ALL)
+    @Builder.Default
+    @ToString.Exclude
+    private Set<Lemma> lemmas = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

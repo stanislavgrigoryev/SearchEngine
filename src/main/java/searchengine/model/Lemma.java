@@ -1,15 +1,20 @@
 package searchengine.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-@Entity
-@Table(name = "lemma", uniqueConstraints = @UniqueConstraint(columnNames = {"site_id", "lemma"}))
 @Getter
 @Setter
+@ToString
+@Builder
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
+@Entity
+@Table(name = "lemma", uniqueConstraints = @UniqueConstraint(columnNames = {"site_id", "lemma"}))
 public class Lemma {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +22,7 @@ public class Lemma {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(nullable = false, columnDefinition = "INT")
+    @JoinColumn(name = "site_id", nullable = false, columnDefinition = "INT")
     private Site site;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")
@@ -25,6 +30,11 @@ public class Lemma {
 
     @Column(nullable = false, columnDefinition = "INT")
     private Integer frequency;
+
+    @OneToMany(mappedBy = "lemma", cascade = CascadeType.ALL)
+    @Builder.Default
+    @ToString.Exclude
+    private Set<Index> indices = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
